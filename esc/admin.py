@@ -1,36 +1,18 @@
 from django.contrib import admin
+from django.utils.html import escape
+from django.utils.safestring import mark_safe
 
-from .models import Esc, EscProblem, EscReplace, EscTO
+from esc.models import Esc
 
 
 @admin.register(Esc)
-class EcsAdmin(admin.ModelAdmin):
-    list_display = ("esc",)
+class EscAdmin(admin.ModelAdmin):
+    list_display = ("esc", "buildings_list")
 
+    def buildings_list(self, obj: Esc) -> str:
+        buildings = obj.buildings_esc.all()
+        if not buildings:
+            return "Нет зданий"
+        return mark_safe("<br>".join(escape(str(b)) for b in buildings))
 
-@admin.register(EscProblem)
-class EscProblemAdmin(admin.ModelAdmin):
-    list_display = (
-        "esc",
-        "problem",
-        "resolved",
-        "create_at",
-    )
-
-
-@admin.register(EscReplace)
-class EscReplaceAdmin(admin.ModelAdmin):
-    list_display = (
-        "esc",
-        "replace",
-        "resolved",
-        "create_at",
-    )
-
-
-@admin.register(EscTO)
-class EscTOAdmin(admin.ModelAdmin):
-    list_display = (
-        "esc",
-        "create_at",
-    )
+    buildings_list.short_description = "Здания"

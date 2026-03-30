@@ -1,16 +1,15 @@
 import os
-from pathlib import Path
 
 from django.core.management.base import BaseCommand
 from dotenv import load_dotenv
 
-from esc.models import Esc, EscChoices
-from lifts.models import AddressChoices, Building, Elevator, ElevatorChoices
+from base.choices import AddressChoices, ElevatorChoices, EscChoices
+from buildings.models import Building
+from esc.models import Esc
+from lifts.models import Elevator
 from users.models import User
 
-BASE_DIR = Path(__file__).resolve().parent.parent
-dot_env = os.path.join(BASE_DIR, ".env")
-load_dotenv(dotenv_path=dot_env)
+load_dotenv()
 
 
 class Command(BaseCommand):
@@ -47,6 +46,50 @@ class Command(BaseCommand):
                     ElevatorChoices.SV6,
                     ElevatorChoices.SV7,
                     ElevatorChoices.SV8,
+                ],
+                "escs": [
+                    EscChoices.E11,
+                    EscChoices.E12,
+                    EscChoices.E13,
+                    EscChoices.E14,
+                    EscChoices.E15,
+                    EscChoices.E16,
+                    EscChoices.E21,
+                    EscChoices.E22,
+                    EscChoices.E23,
+                    EscChoices.E24,
+                    EscChoices.E25,
+                    EscChoices.E26,
+                    EscChoices.E31,
+                    EscChoices.E32,
+                    EscChoices.E33,
+                    EscChoices.E34,
+                    EscChoices.E35,
+                    EscChoices.E36,
+                    EscChoices.E41,
+                    EscChoices.E42,
+                    EscChoices.E43,
+                    EscChoices.E44,
+                    EscChoices.E45,
+                    EscChoices.E46,
+                    EscChoices.E51,
+                    EscChoices.E52,
+                    EscChoices.E53,
+                    EscChoices.E54,
+                    EscChoices.E55,
+                    EscChoices.E56,
+                    EscChoices.E61,
+                    EscChoices.E62,
+                    EscChoices.E63,
+                    EscChoices.E64,
+                    EscChoices.E71,
+                    EscChoices.E72,
+                    EscChoices.E73,
+                    EscChoices.E74,
+                    EscChoices.E81,
+                    EscChoices.E82,
+                    EscChoices.E91,
+                    EscChoices.E92,
                 ],
             },
             {
@@ -124,9 +167,15 @@ class Command(BaseCommand):
         for building_data in buildings_data:
             address = building_data["address"]
             elevators = building_data["elevators"]
+            escs = building_data.get("escs", [])
 
             # Создаем здание или получаем его
             building, created = Building.objects.get_or_create(address=address)
+            # Создаем эскалаторы и связываем их со зданием
+
+            for esc_name in escs:
+                esc, created = Esc.objects.get_or_create(esc=esc_name)
+                building.escs.add(esc)
 
             # Создаем лифты и связываем их со зданием
             for elevator_name in elevators:
@@ -134,57 +183,6 @@ class Command(BaseCommand):
                 building.elevators.add(elevator)
 
         self.stdout.write(self.style.SUCCESS("База данных успешно заполнена начальными данными"))
-
-        esc_data = [
-            EscChoices.E11,
-            EscChoices.E12,
-            EscChoices.E13,
-            EscChoices.E14,
-            EscChoices.E15,
-            EscChoices.E16,
-            EscChoices.E21,
-            EscChoices.E22,
-            EscChoices.E23,
-            EscChoices.E24,
-            EscChoices.E25,
-            EscChoices.E26,
-            EscChoices.E31,
-            EscChoices.E32,
-            EscChoices.E33,
-            EscChoices.E34,
-            EscChoices.E35,
-            EscChoices.E36,
-            EscChoices.E41,
-            EscChoices.E42,
-            EscChoices.E43,
-            EscChoices.E44,
-            EscChoices.E45,
-            EscChoices.E46,
-            EscChoices.E51,
-            EscChoices.E52,
-            EscChoices.E53,
-            EscChoices.E54,
-            EscChoices.E55,
-            EscChoices.E56,
-            EscChoices.E61,
-            EscChoices.E62,
-            EscChoices.E63,
-            EscChoices.E64,
-            EscChoices.E71,
-            EscChoices.E72,
-            EscChoices.E73,
-            EscChoices.E74,
-            EscChoices.E81,
-            EscChoices.E82,
-            EscChoices.E91,
-            EscChoices.E92,
-        ]
-
-        # Заполнение данных для эскалаторов
-        for esc_name in esc_data:
-            Esc.objects.get_or_create(esc=esc_name)
-
-        self.stdout.write(self.style.SUCCESS("Данные для эскалаторов успешно добавлены"))
 
         # Создаем администратора
         email = os.getenv("ADMIN_EMAIL")
@@ -202,7 +200,6 @@ class Command(BaseCommand):
                 last_name=last_name,
                 middle_name=middle_name,
                 phone=phone,
-                is_itr=True,
             )
             self.stdout.write(self.style.SUCCESS(f"Администратор {email} успешно создан"))
         else:

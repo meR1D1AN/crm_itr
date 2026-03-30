@@ -35,7 +35,7 @@
 <ul class="list-group">
     {% for replacement in replacements %}
     <li class="list-group-item">
-        {{ replacement.info_problem }}
+        {{ replacement.info_replacement }}
         {% if replacement.resolved %}
         <span class="badge badge-success">Решено</span>
         {% else %}
@@ -68,7 +68,7 @@
             {% endfor %}
         </ul>
         {% endif %}
-        {{ to.date }}
+        {{ to.create_at }}
     </li>
     {% empty %}
     <li class="list-group-item">Нет данных о ТО</li>

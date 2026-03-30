@@ -1,7 +1,7 @@
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 
-from fixture.all_fixture import NULLABLE
+from base.models import NULLABLE
 
 
 class UserManager(BaseUserManager):
@@ -57,6 +57,10 @@ class User(AbstractUser):
         verbose_name="ИТР",
         default=False,
     )
+    is_mechanic = models.BooleanField(
+        verbose_name="Механик",
+        default=False,
+    )
 
     objects = UserManager()
 
@@ -68,7 +72,7 @@ class User(AbstractUser):
         verbose_name_plural = "Пользователи"
 
     def __str__(self):
-        return f"{self.last_name} {self.first_name[0]}. {self.middle_name[0]}."
+        return f"{self.last_name} {self.first_name} {self.middle_name or ''}".strip()
 
     def get_count_employees(self):
         return self.employees.count()

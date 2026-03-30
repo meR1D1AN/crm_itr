@@ -1,15 +1,16 @@
 from django import forms
 
-from .models import EscProblem, EscReplace
+from problems.models import Problem
+from replacements.models import Replacement
 
 
 class EscProblemForm(forms.ModelForm):
     class Meta:
-        model = EscProblem
+        model = Problem
         fields = ["problem"]
 
 
-class EscReplaceForm(forms.ModelForm):
+class EscReplacementeForm(forms.ModelForm):
     class Meta:
-        model = EscReplace
-        fields = ["replace"]
+        model = Replacement
+        fields = ["info_replacement"]

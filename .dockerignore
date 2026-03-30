@@ -31,3 +31,5 @@ node_modules/
 Dockerfile*
 docker-compose*.yml
 readme.md
+.env
+.env.sample

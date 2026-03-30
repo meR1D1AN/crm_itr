@@ -4,9 +4,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-dot_env = os.path.join(BASE_DIR, ".env")
-load_dotenv(dotenv_path=dot_env)
+load_dotenv()
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = os.getenv("DEBUG") == "True"
@@ -21,8 +19,12 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "lifts",
+    "buildings",
     "itr",
     "esc",
+    "problems",
+    "replacements",
+    "tos",
     "crispy_forms",
     "crispy_bootstrap5",
     "django.contrib.humanize",
@@ -62,7 +64,7 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "ENGINE": "django.db.backends.postgresql",
         "NAME": os.getenv("POSTGRES_DB"),
         "USER": os.getenv("POSTGRES_USER"),
         "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
@@ -91,14 +93,12 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-STATIC_URL = "static/"
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
-# STATICFILES_DIRS = [BASE_DIR / "static"]
+STATIC_URL = "/static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_DIRS = (BASE_DIR / "static",)
 
-MEDIA_URL = "media/"
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
 
 # URL для перенаправления после выхода из системы
 LOGOUT_REDIRECT_URL = "/"
@@ -109,6 +109,7 @@ LOGIN_URL = "/"
 
 CSRF_TRUSTED_ORIGINS = [
     "https://mer1d1an.ru",
+    "http://127.0.0.1:8080",
 ]
 
 CRISPY_TEMPLATE_PACK = "bootstrap5"

@@ -4,9 +4,9 @@
 <form method="post">
     {% csrf_token %}
     <div class="form-group" style="text-align: center;">
-        <lable for="id_info_problem"><strong>Что стоит отремотировать/заменить:</strong></lable>
+        <lable for="id_info_replacement"><strong>Что стоит отремотировать/заменить:</strong></lable>
         <br>
-        {{ form.info_problem }}
+        {{ form.info_replacement }}
         <style>
             textarea, input {
                 width: 100%;

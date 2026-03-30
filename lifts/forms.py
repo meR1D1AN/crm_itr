@@ -1,6 +1,7 @@
 from django import forms
 
-from lifts.models import Problem, Replacement
+from problems.models import Problem
+from replacements.models import Replacement
 
 
 class ProblemForm(forms.ModelForm):
@@ -12,4 +13,4 @@ class ProblemForm(forms.ModelForm):
 class ReplacementForm(forms.ModelForm):
     class Meta:
         model = Replacement
-        fields = ["info_problem"]
+        fields = ["info_replacement"]

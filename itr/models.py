@@ -3,14 +3,8 @@ from datetime import date
 from django.core.validators import RegexValidator
 from django.db import models
 
-from fixture.all_fixture import NULLABLE
-from fixture.choices import (
-    EducationChoices,
-    FirmChoices,
-    GrafikChoices,
-    PositionChoices,
-    VacationStatus,
-)
+from base.choices import EducationChoices, FirmChoices, GrafikChoices, PositionChoices, VacationStatus
+from base.models import NULLABLE
 from users.models import User
 
 
@@ -237,7 +231,7 @@ class Employee(models.Model):
         max_length=30,
         choices=EducationChoices.choices,
         verbose_name="Образование",
-        help_text="Выбери образование сотрудника",
+        help_text="Выберите образование сотрудника",
     )
     # Цок сотрудника нужно загружать pdf файл
     cok = models.FileField(
@@ -291,8 +285,7 @@ class Employee(models.Model):
     def __str__(self):
         if self.middle_name:
             return f"{self.last_name} {self.first_name[0]}. {self.middle_name[0]}."
-        else:
-            return f"{self.last_name} {self.first_name[0]}."
+        return f"{self.last_name} {self.first_name[0]}."
 
     def get_age(self):
         today = date.today()

@@ -2,67 +2,10 @@ import datetime
 
 from django.db import models
 
-from itr.models import NULLABLE, Customer
+from base.choices import DeliveryTimeChoice, UnitChoice
+from base.models import NULLABLE
+from itr.models import Customer
 from users.models import User
-
-
-class DeliveryTimeChoice(models.TextChoices):
-    IN_STOCK = (
-        "В наличии",
-        "В наличии",
-    )
-    DAY_3 = (
-        "3 дня",
-        "3 дня",
-    )
-    DAY_5 = (
-        "5 дней",
-        "5 дней",
-    )
-    DAY_7 = (
-        "1 неделя",
-        "1 неделя",
-    )
-    DAY_10 = (
-        "10 дней",
-        "10 дней",
-    )
-    DAY_14 = (
-        "2 недели",
-        "2 недели",
-    )
-    DAY_21 = (
-        "3 недели",
-        "3 недели",
-    )
-    DAY_30 = (
-        "1 месяц",
-        "1 месяц",
-    )
-    DAY_60 = (
-        "2 месяца",
-        "2 месяца",
-    )
-    DAY_90 = (
-        "3 месяца",
-        "3 месяца",
-    )
-    DAY_120 = (
-        "4 месяца",
-        "4 месяца",
-    )
-    AS_AGREED = "По согласованию", "По согласованию"
-
-
-class UnitChoice(models.TextChoices):
-    UNIT_PC = (
-        "шт",
-        "шт",
-    )
-    UNIT_COMPLEX = (
-        "комп.",
-        "комп.",
-    )
 
 
 class KP(models.Model):

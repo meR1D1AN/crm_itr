@@ -2,7 +2,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.db.models import Q
 
-from fixture.all_fixture import MONTHS
+from base.months import MONTHS
 from users.models import User
 
 from .models import Customer, Employee, Vacation, WorkDay

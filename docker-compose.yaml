@@ -1,11 +1,13 @@
 services:
   db:
-    image: postgres:18.3-alpine
+    image: postgres:18.3
     restart: unless-stopped
     env_file:
       - .env
     expose:
       - 5432
+    ports:
+      - '5432:5432'
     volumes:
       - meh_data:/var/lib/postgresql
     healthcheck:

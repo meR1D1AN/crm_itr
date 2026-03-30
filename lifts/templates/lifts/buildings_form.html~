@@ -1,5 +1,0 @@
-{% extends 'lifts/base.html' %}
-{% block content %}
-<h1 class="text-center align-middle">Создание здания</h1>
-<form >
-{% endblock %}
