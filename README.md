@@ -7,25 +7,21 @@
 
 1. Клонировать репозиторий:
 ```bash
-
 git clone https://github.com/meR1D1AN/meh_itr.git
 cd meh_itr
 ```
 2. Скопируйте файл .env.sample в .env и внесите Ваши данные:
 ```bash
-
 cp .env.sample .env
 ```
 3. Установка зависимостей и активация виртуального окружения:
 ```bash
-
 poetry install
 poetry self add poetry-plugin-shell
 poetry shell
 ```
 4. Запуск сервера с помощью docker-compose:
 ```bash
-
 docker-compose up -d --build
 ```
 
