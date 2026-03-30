@@ -99,7 +99,9 @@ class Migration(migrations.Migration):
             model_name="workday",
             name="employee",
             field=models.ForeignKey(
-                on_delete=django.db.models.deletion.CASCADE, related_name="workdays", to="itr.employee"
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="workdays",
+                to="itr.employee",
             ),
         ),
     ]

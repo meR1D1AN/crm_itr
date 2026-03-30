@@ -4,7 +4,13 @@ from django.core.validators import RegexValidator
 from django.db import models
 
 from fixture.all_fixture import NULLABLE
-from fixture.choices import EducationChoices, FirmChoices, GrafikChoices, PositionChoices, VacationStatus
+from fixture.choices import (
+    EducationChoices,
+    FirmChoices,
+    GrafikChoices,
+    PositionChoices,
+    VacationStatus,
+)
 from users.models import User
 
 

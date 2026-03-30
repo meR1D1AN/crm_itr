@@ -1,42 +1,31 @@
-[tool.poetry]
-name = "noopept"
-version = "0.9.0"
+[project]
+name = "itr_crm"
+version = "0.10.0"
 description = "Вэб-приложение для начальников участка, электромехаников по лифтам и эскалаторам"
+readme = "README.md"
 authors = ["Никита Шидогубов <mered1an@live.com>"]
-
-[tool.poetry.dependencies]
-python = "^3.12"
-django = "^5.2.5"
-psycopg2-binary = "^2.9.10"
-python-dotenv = "^1.1.1"
-gunicorn = "^23.0.0"
-django-crispy-forms = "^2.3"
-crispy-bootstrap5 = "^2025.6"
-openpyxl = "^3.1.5"
-gevent = "^25.5.1"
-pillow = "^11.1.0"
-django-otp = "^1.5.4"
-qrcode = { extras = ["pil"], version = "^8.0" }
-pyotp = "^2.9.0"
-lxml = "^6.0.0"
-django-cors-headers = "^4.7.0"
-django-filter = "^25.1"
-cffi = "^2.0.0b1"
-black = "^25.1.0"
-
-[tool.poetry.group.dev.dependencies]
-ruff = "^0.12.9"
-pre-commit = "^4.3.0"
-black = "^25.1.0"
-
-
-[tool.poetry.group.test.dependencies]
-pytest-django = "^4.11.1"
-pytest = "^8.4.1"
-
-[tool.black]
-line-length = 119
-extend-exclude = "migrations/"
+requires-python = ">=3.13"
+dependencies = [
+    "cffi>=2.0.0",
+    "crispy-bootstrap5>=2026.3",
+    "django>=6.0.3",
+    "django-cors-headers>=4.9.0",
+    "django-crispy-forms>=2.6",
+    "django-filter>=25.2",
+    "django-otp>=1.7.0",
+    "gevent>=25.9.1",
+    "gunicorn>=25.3.0",
+    "lxml>=6.0.2",
+    "openpyxl>=3.1.5",
+    "pillow>=12.1.1",
+    "pre-commit>=4.5.1",
+    "psycopg[binary]>=3.3.3",
+    "pyotp>=2.9.0",
+    "pytest-django>=4.12.0",
+    "python-dotenv>=1.2.2",
+    "qrcode[pil]>=8.2",
+    "ruff>=0.15.8",
+]
 
 [tool.ruff]
 line-length = 119
@@ -46,12 +35,11 @@ exclude = [
     "__pycache__",
     "__init__.py",
     "manage.py",
-    "poetry.lock",
     "pyproject.toml",
-    "migrations",
-    "tests.py",
+    "*/migrations/*",
+    "*/tests/*",
 ]
-target-version = "py312"
+target-version = "py313"
 fix = true
 
 [tool.ruff.format]
@@ -63,7 +51,3 @@ line-ending = "lf"
 ignore = ["E501", "W293"]
 select = ["E", "F", "I", "B", "C", "A", "N", "UP"]
 mccabe.max-complexity = 12
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"

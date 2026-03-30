@@ -13,7 +13,15 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name="Customer",
             fields=[
-                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
                 (
                     "customer_name",
                     models.CharField(
@@ -37,7 +45,10 @@ class Migration(migrations.Migration):
                 (
                     "salary",
                     models.PositiveIntegerField(
-                        blank=True, help_text="Введите ЗП сотрудника", null=True, verbose_name="ЗП"
+                        blank=True,
+                        help_text="Введите ЗП сотрудника",
+                        null=True,
+                        verbose_name="ЗП",
                     ),
                 ),
                 (
@@ -127,14 +138,30 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name="Employee",
             fields=[
-                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
                 (
                     "last_name",
-                    models.CharField(help_text="Введите фамилию сотрудника", max_length=30, verbose_name="Фамилия"),
+                    models.CharField(
+                        help_text="Введите фамилию сотрудника",
+                        max_length=30,
+                        verbose_name="Фамилия",
+                    ),
                 ),
                 (
                     "first_name",
-                    models.CharField(help_text="Введите имя сотрудника", max_length=30, verbose_name="Имя"),
+                    models.CharField(
+                        help_text="Введите имя сотрудника",
+                        max_length=30,
+                        verbose_name="Имя",
+                    ),
                 ),
                 (
                     "middle_name",
@@ -227,13 +254,19 @@ class Migration(migrations.Migration):
                 (
                     "issued_when",
                     models.DateField(
-                        blank=True, help_text="Выберете дату выданы паспорта", null=True, verbose_name="Когда выдан"
+                        blank=True,
+                        help_text="Выберете дату выданы паспорта",
+                        null=True,
+                        verbose_name="Когда выдан",
                     ),
                 ),
                 (
                     "date_of_birth",
                     models.DateField(
-                        blank=True, help_text="Выберете дату рождения", null=True, verbose_name="Дата рождения"
+                        blank=True,
+                        help_text="Выберете дату рождения",
+                        null=True,
+                        verbose_name="Дата рождения",
                     ),
                 ),
                 (
@@ -259,7 +292,10 @@ class Migration(migrations.Migration):
                 (
                     "date_registration",
                     models.DateField(
-                        blank=True, help_text="Выберете дату регистрации", null=True, verbose_name="Дата регистрации"
+                        blank=True,
+                        help_text="Выберете дату регистрации",
+                        null=True,
+                        verbose_name="Дата регистрации",
                     ),
                 ),
                 (
@@ -271,7 +307,8 @@ class Migration(migrations.Migration):
                         null=True,
                         validators=[
                             django.core.validators.RegexValidator(
-                                "^\\d{3}-\\d{3}-\\d{3} \\d{2}$", "СНИЛС должен быть в формате 123-456-789 00."
+                                "^\\d{3}-\\d{3}-\\d{3} \\d{2}$",
+                                "СНИЛС должен быть в формате 123-456-789 00.",
                             )
                         ],
                         verbose_name="СНИЛС",
@@ -290,11 +327,16 @@ class Migration(migrations.Migration):
                         verbose_name="ИНН",
                     ),
                 ),
-                ("metro", models.CharField(help_text="Выберите метро", max_length=100, verbose_name="Метро")),
+                (
+                    "metro",
+                    models.CharField(help_text="Выберите метро", max_length=100, verbose_name="Метро"),
+                ),
                 (
                     "residential_address",
                     models.CharField(
-                        help_text="Введите адрес проживания", max_length=100, verbose_name="Адрес проживания"
+                        help_text="Введите адрес проживания",
+                        max_length=100,
+                        verbose_name="Адрес проживания",
                     ),
                 ),
                 (
@@ -353,7 +395,10 @@ class Migration(migrations.Migration):
                 (
                     "date_of_termination",
                     models.DateField(
-                        blank=True, help_text="Выберете дату увольнения", null=True, verbose_name="Дата увольнения"
+                        blank=True,
+                        help_text="Выберете дату увольнения",
+                        null=True,
+                        verbose_name="Дата увольнения",
                     ),
                 ),
                 (
@@ -376,7 +421,15 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name="Vacation",
             fields=[
-                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
                 (
                     "start_date",
                     models.DateField(
@@ -399,7 +452,11 @@ class Migration(migrations.Migration):
                     "status",
                     models.CharField(
                         blank=True,
-                        choices=[("pending", "На согласовании"), ("approved", "Согласован"), ("rejected", "Отклонен")],
+                        choices=[
+                            ("pending", "На согласовании"),
+                            ("approved", "Согласован"),
+                            ("rejected", "Отклонен"),
+                        ],
                         default="pending",
                         max_length=20,
                         null=True,
@@ -416,8 +473,14 @@ class Migration(migrations.Migration):
                         verbose_name="Заявление на отпуск",
                     ),
                 ),
-                ("created_at", models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")),
-                ("updated_at", models.DateTimeField(auto_now=True, verbose_name="Дата последнего изменения")),
+                (
+                    "created_at",
+                    models.DateTimeField(auto_now_add=True, verbose_name="Дата создания"),
+                ),
+                (
+                    "updated_at",
+                    models.DateTimeField(auto_now=True, verbose_name="Дата последнего изменения"),
+                ),
             ],
             options={
                 "verbose_name": "Отпуск",
@@ -427,9 +490,26 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name="WorkDay",
             fields=[
-                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
                 ("date", models.DateField()),
-                ("salary", models.DecimalField(blank=True, decimal_places=2, default=0, max_digits=10, null=True)),
+                (
+                    "salary",
+                    models.DecimalField(
+                        blank=True,
+                        decimal_places=2,
+                        default=0,
+                        max_digits=10,
+                        null=True,
+                    ),
+                ),
             ],
             options={
                 "verbose_name": "Рабочий день",

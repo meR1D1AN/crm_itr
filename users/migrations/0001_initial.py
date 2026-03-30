@@ -15,9 +15,20 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name="User",
             fields=[
-                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
                 ("password", models.CharField(max_length=128, verbose_name="password")),
-                ("last_login", models.DateTimeField(blank=True, null=True, verbose_name="last login")),
+                (
+                    "last_login",
+                    models.DateTimeField(blank=True, null=True, verbose_name="last login"),
+                ),
                 (
                     "is_superuser",
                     models.BooleanField(
@@ -42,28 +53,54 @@ class Migration(migrations.Migration):
                         verbose_name="active",
                     ),
                 ),
-                ("date_joined", models.DateTimeField(default=django.utils.timezone.now, verbose_name="date joined")),
+                (
+                    "date_joined",
+                    models.DateTimeField(default=django.utils.timezone.now, verbose_name="date joined"),
+                ),
                 (
                     "email",
                     models.EmailField(
-                        help_text="Введите email", max_length=254, unique=True, verbose_name="Электронная почта"
+                        help_text="Введите email",
+                        max_length=254,
+                        unique=True,
+                        verbose_name="Электронная почта",
                     ),
                 ),
                 (
                     "phone",
                     models.CharField(
-                        help_text="в формате +79991234567", max_length=12, unique=True, verbose_name="Номер телефона"
+                        help_text="в формате +79991234567",
+                        max_length=12,
+                        unique=True,
+                        verbose_name="Номер телефона",
                     ),
                 ),
-                ("first_name", models.CharField(help_text="Введите имя", max_length=30, verbose_name="Имя")),
-                ("last_name", models.CharField(help_text="Введите фамилию", max_length=30, verbose_name="Фамилия")),
+                (
+                    "first_name",
+                    models.CharField(help_text="Введите имя", max_length=30, verbose_name="Имя"),
+                ),
+                (
+                    "last_name",
+                    models.CharField(
+                        help_text="Введите фамилию",
+                        max_length=30,
+                        verbose_name="Фамилия",
+                    ),
+                ),
                 (
                     "middle_name",
                     models.CharField(
-                        blank=True, help_text="Введите отчество", max_length=30, null=True, verbose_name="Отчество"
+                        blank=True,
+                        help_text="Введите отчество",
+                        max_length=30,
+                        null=True,
+                        verbose_name="Отчество",
                     ),
                 ),
-                ("is_builder", models.BooleanField(default=False, verbose_name="Строительный отдел")),
+                (
+                    "is_builder",
+                    models.BooleanField(default=False, verbose_name="Строительный отдел"),
+                ),
                 ("is_itr", models.BooleanField(default=False, verbose_name="ИТР")),
                 (
                     "groups",

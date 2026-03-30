@@ -13,7 +13,15 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name="Elevator",
             fields=[
-                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
                 (
                     "elevator",
                     models.CharField(
@@ -97,7 +105,15 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name="Building",
             fields=[
-                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
                 (
                     "address",
                     models.CharField(
@@ -119,7 +135,10 @@ class Migration(migrations.Migration):
                 (
                     "elevators",
                     models.ManyToManyField(
-                        blank=True, related_name="buildings", to="lifts.elevator", verbose_name="Лифты"
+                        blank=True,
+                        related_name="buildings",
+                        to="lifts.elevator",
+                        verbose_name="Лифты",
                     ),
                 ),
             ],
@@ -131,7 +150,15 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name="Problem",
             fields=[
-                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
                 ("problem", models.TextField(verbose_name="Информация о проблеме")),
                 ("resolved", models.BooleanField(default=False, verbose_name="Решено")),
                 (
@@ -162,7 +189,15 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name="Replacement",
             fields=[
-                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
                 ("info_problem", models.TextField(verbose_name="Что стоит заменить")),
                 ("resolved", models.BooleanField(default=False, verbose_name="Решено")),
                 (
@@ -177,7 +212,9 @@ class Migration(migrations.Migration):
                 (
                     "elevator",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE, to="lifts.elevator", verbose_name="Лифт"
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="lifts.elevator",
+                        verbose_name="Лифт",
                     ),
                 ),
             ],
@@ -189,8 +226,19 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name="TO",
             fields=[
-                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
-                ("date", models.DateField(auto_now_add=True, verbose_name="Дата проведения ТО")),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "date",
+                    models.DateField(auto_now_add=True, verbose_name="Дата проведения ТО"),
+                ),
                 (
                     "building",
                     models.ForeignKey(
@@ -204,7 +252,9 @@ class Migration(migrations.Migration):
                 (
                     "elevator",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE, to="lifts.elevator", verbose_name="Лифт"
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="lifts.elevator",
+                        verbose_name="Лифт",
                     ),
                 ),
             ],

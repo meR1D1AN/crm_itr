@@ -13,7 +13,15 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name="Esc",
             fields=[
-                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
                 (
                     "esc",
                     models.CharField(
@@ -76,14 +84,27 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name="EscProblem",
             fields=[
-                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
                 ("problem", models.CharField(max_length=255, verbose_name="Проблема")),
-                ("create_at", models.DateTimeField(auto_now_add=True, verbose_name="Дата проблемы")),
+                (
+                    "create_at",
+                    models.DateTimeField(auto_now_add=True, verbose_name="Дата проблемы"),
+                ),
                 ("resolved", models.BooleanField(default=False, verbose_name="Решено")),
                 (
                     "esc",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE, to="esc.esc", verbose_name="Эскалатор"
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="esc.esc",
+                        verbose_name="Эскалатор",
                     ),
                 ),
             ],
@@ -95,14 +116,27 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name="EscReplace",
             fields=[
-                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
                 ("replace", models.CharField(max_length=255, verbose_name="Заменить")),
-                ("create_at", models.DateTimeField(auto_now_add=True, verbose_name="Дата замены")),
+                (
+                    "create_at",
+                    models.DateTimeField(auto_now_add=True, verbose_name="Дата замены"),
+                ),
                 ("resolved", models.BooleanField(default=False, verbose_name="Решено")),
                 (
                     "esc",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE, to="esc.esc", verbose_name="Эскалатор"
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="esc.esc",
+                        verbose_name="Эскалатор",
                     ),
                 ),
             ],
@@ -114,12 +148,25 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name="EscTO",
             fields=[
-                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
-                ("create_at", models.DateTimeField(auto_now_add=True, verbose_name="Дата проведения ТО")),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "create_at",
+                    models.DateTimeField(auto_now_add=True, verbose_name="Дата проведения ТО"),
+                ),
                 (
                     "esc",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE, to="esc.esc", verbose_name="Эскалатор"
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="esc.esc",
+                        verbose_name="Эскалатор",
                     ),
                 ),
             ],
