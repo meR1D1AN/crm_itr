@@ -1,0 +1,49 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
+from django.views.generic import CreateView, ListView, UpdateView  # , DeleteView
+
+from .models import KP  # , KPDetail
+
+
+class KPListView(LoginRequiredMixin, ListView):
+    model = KP
+    template_name = "kp/kp_list.html"
+    context_object_name = "kps"
+
+
+class KPCreateView(LoginRequiredMixin, CreateView):
+    model = KP
+    # form_class = KPForm
+    template_name = "kp/kp_form.html"
+    success_url = reverse_lazy("kp:kp_list")
+
+
+class KPDetailView(LoginRequiredMixin, UpdateView):
+    model = KP
+    template_name = "kp/kp_detail.html"
+    context_object_name = "kp"
+
+
+class KPUpdateView(LoginRequiredMixin, UpdateView):
+    model = KP
+    #    form_class = KPForm
+    template_name = "kp/kp_form.html"
+    success_url = reverse_lazy("kp:kp_list")
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["user"] = self.request.user  # Передаем текущего пользователя в форму
+        return kwargs
+
+    def form_valid(self, form):
+        form.instance.created_by = self.request.user  # Автоматически назначаем создателя
+        return super().form_valid(form)
+
+    def test_func(self):
+        kp = self.get_object()
+        return self.request.user.is_superuser or self.request.user == kp.created_by
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["is_update"] = True
+        return context

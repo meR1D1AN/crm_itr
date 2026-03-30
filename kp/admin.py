@@ -1,0 +1,8 @@
+from django.contrib import admin
+
+from kp.models import KP
+
+
+@admin.register(KP)
+class KPAdmin(admin.ModelAdmin):
+    list_display = ("number", "customer", "create_at")
