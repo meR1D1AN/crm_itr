@@ -1,0 +1,43 @@
+from django.core.management.base import BaseCommand
+from lifts.models import Building, Elevator
+
+class Command(BaseCommand):
+    help = 'Заполняет базу данных начальными данными'
+
+    def handle(self, *args, **kwargs):
+        # Создаем здание
+        building, created = Building.objects.get_or_create(address="D36")
+
+        # Создаем лифты для здания
+        elevators = [
+            {"elevator": "P1", "building": building},
+            {"elevator": "P2", "building": building},
+            {"elevator": "P3", "building": building},
+            {"elevator": "P4", "building": building},
+            {"elevator": "P5", "building": building},
+            {"elevator": "P6", "building": building},
+            {"elevator": "P7", "building": building},
+            {"elevator": "P8", "building": building},
+            {"elevator": "P9", "building": building},
+            {"elevator": "P12", "building": building},
+            {"elevator": "P13", "building": building},
+            {"elevator": "P14", "building": building},
+            {"elevator": "P15", "building": building},
+            {"elevator": "P16", "building": building},
+            {"elevator": "P17", "building": building},
+            {"elevator": "P18", "building": building},
+            {"elevator": "P19", "building": building},
+            {"elevator": "SV1", "building": building},
+            {"elevator": "SV2", "building": building},
+            {"elevator": "SV3", "building": building},
+            {"elevator": "SV4", "building": building},
+            {"elevator": "SV5", "building": building},
+            {"elevator": "SV6", "building": building},
+            {"elevator": "SV7", "building": building},
+            {"elevator": "SV8", "building": building},
+        ]
+
+        for elevator_data in elevators:
+            Elevator.objects.get_or_create(**elevator_data)
+
+        self.stdout.write(self.style.SUCCESS('База данных успешно заполнена начальными данными'))

@@ -1,0 +1,26 @@
+{% extends 'lifts/base.html' %}
+{% block content %}
+<h2>{{ employee.last_name }} {{ employee.first_name }} {{ employee.middle_name }}</h2>
+<h3>{{ month_name }} {{ year }}</h3>
+
+<table class="table table-hover mt-4">
+    <thead>
+    <tr>
+        <th>Дата</th>
+        <th>Зарплата</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for workday in workdays %}
+    <tr>
+        <td>{{ workday.date }}</td>
+        <td>{{ workday.salary }}</td>
+    </tr>
+    {% endfor %}
+    <tr>
+        <td><strong>Итого:</strong></td>
+        <td><strong>{{ total_salary }}</strong></td>
+    </tr>
+    </tbody>
+</table>
+{% endblock %}

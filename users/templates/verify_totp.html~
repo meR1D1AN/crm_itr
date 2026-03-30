@@ -1,0 +1,21 @@
+{% extends 'lifts/base.html' %}
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <form method="post" action="">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="{{ form.totp_code.id_for_label }}" class="form-label">Код из приложения</label>
+            <br>
+            {{ form.totp_code }}
+        </div>
+        <div class="d-grid gap-2 col-6 mx-auto">
+            <button type="submit" class="btn btn-outline-success">Проверить</button>
+        </div>
+    </form>
+    {% if error %}
+    <div class="alert alert-danger mt-3">
+        <p>{{ error }}</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,22 @@
+from django import forms
+from lifts.models import TO, Problem, Replacement
+
+
+# class TOForm(forms.ModelForm):
+#     date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+#
+#     class Meta:
+#         model = TO
+#         fields = ['date']
+
+
+class ProblemForm(forms.ModelForm):
+    class Meta:
+        model = Problem
+        fields = ['problem']
+
+
+class ReplacementForm(forms.ModelForm):
+    class Meta:
+        model = Replacement
+        fields = ['info_problem']

@@ -1,0 +1,59 @@
+{% extends 'lifts/base.html' %}
+{% block content %}
+<h2>Добавить рабочие дни</h2>
+<form id="workday-form" method="post">
+    {% csrf_token %}
+    <div id="calendar"></div>
+    <input type="hidden" id="selected-dates" name="selected_dates">
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+</form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            locale: 'ru',
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: ''
+            },
+            buttonText: {
+                today: 'Сегодня'
+            },
+            dayHeaderFormat: { weekday: 'short' }, // Компактное отображение дней недели
+            dateClick: function(info) {
+                var date = info.dateStr;
+                var selectedDates = JSON.parse(document.getElementById('selected-dates').value);
+                if (selectedDates.includes(date)) {
+                    selectedDates = selectedDates.filter(d => d !== date);
+                    info.dayEl.classList.remove('selected-day');
+                } else {
+                    selectedDates.push(date);
+                    info.dayEl.classList.add('selected-day');
+                }
+                document.getElementById('selected-dates').value = JSON.stringify(selectedDates);
+            }
+        });
+        calendar.render();
+    });
+</script>
+
+<style>
+    .fc-col-header-cell {
+        font-size: 0.8em; /* Уменьшение размера шрифта для дней недели */
+        padding: 2px; /* Уменьшение отступов */
+    }
+    .fc-daygrid-day-number {
+        font-size: 0.9em; /* Уменьшение размера шрифта для чисел */
+        padding: 2px; /* Уменьшение отступов */
+    }
+    .fc-daygrid-day {
+        height: 30px; /* Уменьшение высоты строк */
+    }
+    .selected-day {
+        background-color: #aaffaa; /* Цвет для выбранных дней */
+    }
+</style>
+{% endblock %}

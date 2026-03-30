@@ -1,0 +1,8 @@
+{% extends "lifts/base.html" %}
+{% block content %}
+<h1>График работы на объекте {{ customer.customer_name }}</h1>
+
+<div class="container border mb-4">
+
+
+{% endblock %}

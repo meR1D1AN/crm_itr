@@ -1,0 +1,42 @@
+{% extends 'lifts/base.html' %}
+{% block content %}
+<div class="container">
+    <h2>Расчет зарплаты</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="year">Год:</label>
+            <input type="number" class="form-control" id="year" name="year" value="2023" required>
+        </div>
+        <div class="form-group">
+            <label for="month">Месяц:</label>
+            <input type="number" class="form-control" id="month" name="month" value="10" required>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Сотрудник</th>
+                    {% for day in "x"|rjust:31 %}
+                    <th>{{ forloop.counter }}</th>
+                    {% endfor %}
+                    <th>Итого</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for employee in employees %}
+                <tr>
+                    <td>{{ employee.last_name }} {{ employee.first_name }} {{ employee.middle_name }}</td>
+                    {% for day in "x"|rjust:31 %}
+                    <td>
+                        <input type="checkbox" name="workday_{{ employee.id }}_{{ forloop.counter }}" {% if workdays.get(employee.id) and workdays[employee.id].filter(date__day=forloop.counter).exists %}checked{% endif %}>
+                    </td>
+                    {% endfor %}
+                    <td>{{ employee.customer.salary }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <button type="submit" class="btn btn-primary">Рассчитать</button>
+    </form>
+</div>
+{% endblock %}

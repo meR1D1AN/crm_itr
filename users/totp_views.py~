@@ -1,0 +1,142 @@
+import pyotp
+import qrcode
+import qrcode.image.svg
+from io import BytesIO
+import base64
+import binascii
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from django_otp.plugins.otp_totp.models import TOTPDevice
+
+
+@login_required
+def setup_totp(request):
+    """Представление для настройки TOTP"""
+    # Проверяем, есть ли уже настроенное устройство
+    if request.user.is_totp_enabled:
+        messages.info(request, "Двухфакторная аутентификация уже включена.")
+        return redirect("users:profile")
+
+    # Если форма отправлена (подтверждение кода)
+    if request.method == "POST":
+        code = request.POST.get("code")
+        secret_key = request.session.get("totp_secret")
+
+        if not secret_key:
+            messages.error(request, "Сессия истекла. Пожалуйста, начните настройку заново.")
+            return redirect("users:setup_totp")
+
+        # Проверяем введенный код
+        totp = pyotp.TOTP(secret_key)
+        if totp.verify(code):
+            # Код верный, сохраняем устройство
+            # Преобразуем Base32 ключ в шестнадцатеричный формат
+            binary_key = base64.b32decode(secret_key)
+            hex_key = binascii.hexlify(binary_key).decode('ascii')
+
+            device = TOTPDevice.objects.create(
+                user=request.user,
+                name="default",
+                confirmed=True,
+                key=hex_key  # Сохраняем ключ в hex формате
+            )
+
+            # Помечаем пользователя как имеющего настроенный TOTP
+            request.user.is_totp_enabled = True
+            request.user.save()
+
+            # Удаляем ключ из сессии
+            del request.session["totp_secret"]
+
+            messages.success(request, "Двухфакторная аутентификация успешно настроена.")
+            return redirect("users:profile")
+        else:
+            messages.error(request, "Неверный код. Пожалуйста, попробуйте еще раз.")
+
+    # Генерируем новый секретный ключ
+    secret_key = pyotp.random_base32()
+    request.session["totp_secret"] = secret_key
+
+    # Создаем URL для QR-кода
+    totp = pyotp.TOTP(secret_key)
+    provisioning_url = totp.provisioning_uri(name=request.user.email, issuer_name=request.get_host())
+
+    # Генерируем QR-код
+    img = qrcode.make(provisioning_url, image_factory=qrcode.image.svg.SvgImage)
+
+    # Конвертируем SVG в строку для передачи в шаблон
+    stream = BytesIO()
+    img.save(stream)
+    svg_string = stream.getvalue().decode()
+
+    return render(request, "users/setup_totp.html", {"svg_qrcode": svg_string, "secret_key": secret_key})
+
+
+@login_required
+def disable_totp(request):
+    """Отключение двухфакторной аутентификации"""
+    if not request.user.is_totp_enabled:
+        messages.info(request, "Двухфакторная аутентификация не включена.")
+        return redirect("users:profile")
+
+    if request.method == "POST":
+        # Удаляем все TOTP устройства пользователя
+        TOTPDevice.objects.filter(user=request.user).delete()
+
+        # Обновляем флаг пользователя
+        request.user.is_totp_enabled = False
+        request.user.save()
+
+        messages.success(request, "Двухфакторная аутентификация отключена.")
+        return redirect("users:profile")
+
+    return render(request, "users/disable_totp.html")
+
+
+def verify_totp(request):
+    """Представление для проверки TOTP кода после входа по паролю"""
+    if request.user.is_authenticated:
+        if not getattr(request.user, "is_totp_enabled", False):
+            return redirect("lifts:building_list")
+
+        if getattr(request.user, "_totp_verified", False):
+            return redirect("lifts:building_list")
+
+    user_id = request.session.get("totp_user_id")
+    if not user_id:
+        # Если нет ID пользователя в сессии, перенаправляем на страницу входа
+        return redirect("home")
+
+    if request.method == "POST":
+        code = request.POST.get("code")
+
+        from django.contrib.auth import get_user_model
+
+        User = get_user_model()
+
+        try:
+            user = User.objects.get(pk=user_id)
+        except User.DoesNotExist:
+            return redirect("home")
+
+        # Получаем устройство пользователя
+        devices = TOTPDevice.objects.devices_for_user(user, confirmed=True)
+        for device in devices:
+            if device.verify_token(code):
+                # Код подтвержден, завершаем вход
+                from django.contrib.auth import login
+
+                login(request, user)
+
+                # Устанавливаем флаг, что TOTP проверен
+                setattr(user, "_totp_verified", True)
+
+                # Удаляем ID пользователя из сессии
+                del request.session["totp_user_id"]
+
+                return redirect("lifts:building_list")
+
+        messages.error(request, "Неверный код подтверждения. Пожалуйста, попробуйте еще раз.")
+
+    return render(request, "users/verify_totp.html")

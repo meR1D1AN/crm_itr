@@ -1,0 +1,19 @@
+{% extends 'lifts/base.html' %}
+{% block content %}
+<div class="container">
+    <h2>Настройка двухфакторной аутентификации</h2>
+    <div class="mb-3">
+        {{ svg|safe }} <br>
+        код: {{ form.totp_code }}
+        <p>Отсканируйте QR-код в Microsoft Authenticator</p>
+
+    </div>
+
+    <form method="post" action="">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary">Активировать TOTP или проверить</button>
+    </form>
+
+</div>
+
+{% endblock %}

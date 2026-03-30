@@ -1,0 +1,20 @@
+from django.shortcuts import render
+from itr.models import Customer, Employee
+from lifts.models import Building
+from esc.models import Escalator
+
+def search(request):
+    query = request.GET.get('q')
+    results = []
+
+    if query:
+        # Поиск по всем моделям
+        customer_results = Customer.objects.filter(name__icontains=query)
+        employee_results = Employee.objects.filter(name__icontains=query)
+        building_results = Building.objects.filter(name__icontains=query)
+        escalator_results = Escalator.objects.filter(name__icontains=query)
+
+        # Объединение результатов
+        results = list(customer_results) + list(employee_results) + list(building_results) + list(escalator_results)
+
+    return render(request, 'search_results.html', {'results': results, 'query': query})

@@ -1,0 +1,99 @@
+{% extends "lifts/base.html" %}
+{% load static %}
+{% load custom_filters %}
+{% block content %}
+<div class="container my-4">
+    <form method="post" action="{% url 'itr:attendance' %}?year={{ selected_year }}&month={{ selected_month }}">
+        {% csrf_token %}
+        <div id="controls" class="d-flex justify-content-center mb-3">
+            <label for="year" class="form-label me-2">Год:</label>
+            <select id="year" class="form-select w-auto me-3" onchange="updateUrl()">
+                {% for year in years %}
+                <option value="{{ year }}" {% if year == selected_year %}selected{% endif %}>{{ year }}</option>
+                {% endfor %}
+            </select>
+            <label for="month" class="form-label me-2">Месяц:</label>
+            <select id="month" class="form-select w-auto" onchange="updateUrl()">
+                {% for month in months %}
+                <option value="{{ month.value }}" {% if month.value == selected_month %}selected{% endif %}>{{ month.name }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Таблица с рабочими днями и расчетом зарплаты -->
+        <div id="attendance-table">
+            <table class="table table-bordered table-hover text-center">
+                <thead>
+                <tr>
+                    <th>ФИО</th>
+                    {% for day in days %}
+                    <th style="{% if day.is_weekend %}background-color: #f0f0f0;{% endif %}">
+                        <span>{{ day.weekday }}</span><br>
+                        <span>{{ day.day }}</span>
+                    </th>
+                    {% endfor %}
+                    <th>ИТОГО</th>
+                    <th>Зарплата</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for employee in employees %}
+                <tr>
+                    <td>{{ employee.last_name }} {{ employee.first_name|slice:":1" }}. {{ employee.middle_name|slice:":1" }}.
+                    </td>
+                    {% for day in days %}
+                    <td>
+                        {% with key=employee.id|make_tuple:day.day %}
+                        <input type="checkbox" name="work_{{ employee.id }}_{{ day.day }}"
+                               {% if workdays|get_nested:key %}checked{% endif %}
+                               {% if day.is_weekend %}style="background-color: #f0f0f0;"{% endif %}>
+                        {% endwith %}
+                    </td>
+                    {% endfor %}
+                    <td class="total">0</td>
+                    <td class="salary">{{ salaries.employee.id }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <button type="submit" class="btn btn-primary mt-3">Сохранить рабочие дни</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    function updateUrl() {
+        const year = document.getElementById('year').value;
+        const month = document.getElementById('month').value;
+        window.location.href = `{% url 'itr:attendance' %}?year=${year}&month=${month}`;
+    }
+
+    function calculateTotal(checkbox) {
+        const row = checkbox.closest('tr');
+        const totalCell = row.querySelector('.total');
+        const checkboxes = row.querySelectorAll('input[type="checkbox"]');
+        let total = 0;
+        checkboxes.forEach(cb => {
+            if (cb.checked) total++;
+        });
+        totalCell.textContent = total;
+
+        // Подсчет зарплаты
+        const salaryCell = row.querySelector('.salary');
+        const dailyRate = calculate_salary; // Пример ставки за день
+        salaryCell.textContent = total * dailyRate;
+    }
+
+    // Инициализация значений "ИТОГО" и зарплаты при загрузке страницы
+    document.addEventListener('DOMContentLoaded', function() {
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(cb => {
+            cb.addEventListener('change', function() {
+                calculateTotal(this);
+            });
+            calculateTotal(cb); // Инициализация значений
+        });
+    });
+</script>
+{% endblock %}
